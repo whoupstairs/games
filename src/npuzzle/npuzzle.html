@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>nPuzzle</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+    <table id="table"></table>
+
+    <script>
+        // DOMContentLoaded イベントが発生したときに init() を呼び出す
+        document.addEventListener("DOMContentLoaded", function () {
+            init();
+        });
+
+        // init 関数
+        function init() {
+            const n = prompt("Enter the size of the puzzle (n): ");
+            // スクリプト要素を作成
+            const script = document.createElement("script");
+            script.src = "script.js";
+            console.log("n:" + n);
+            // data-n 属性をセットして値を渡す
+            script.setAttribute("data-n", n);
+            // body 要素に追加してスクリプトをロード
+            document.body.appendChild(script);
+        }
+    </script>
+</body>
+
+</html>
