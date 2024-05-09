@@ -1,31 +1,25 @@
 "use strict";
-
-document.addEventListener("DOMContentLoaded", function () {
-  init();
-});
+document.addEventListener("DOMContentLoaded", init);
 
 function init() {
-  const puzzleSizeAttribute = document.currentScript.getAttribute("data-n");
-  console.log("puzzleSizeAttribute:", puzzleSizeAttribute); // 属性値をログに出力する
-  const puzzleSize = parseInt(puzzleSizeAttribute);
-  console.log("puzzleSize:", puzzleSize); // パースされたサイズをログに出力する
+  const size = 5;
   const table = document.getElementById("table");
   const tiles = [];
-  createGrid(table, tiles, puzzleSize);
-  shuffleTiles(tiles, puzzleSize);
+  createGrid(table, tiles, size);
+  shuffleTiles(tiles, size);
 }
 
-function createGrid(table, tiles, puzzleSize) {
-  for (let i = 0; i < puzzleSize; i++) {
+function createGrid(table, tiles, size) {
+  for (let i = 0; i < size; i++) {
     const tr = document.createElement("tr");
-    for (let j = 0; j < puzzleSize; j++) {
+    for (let j = 0; j < size; j++) {
       const td = document.createElement("td");
-      const index = i * puzzleSize + j;
+      const index = i * size + j;
       td.className = "tile";
       td.index = index;
       td.value = index;
       td.textContent = index === 0 ? "" : index;
-      td.addEventListener("click", (event) => click(event, tiles, puzzleSize));
+      td.addEventListener("click", (event) => click(event, tiles));
       tr.appendChild(td);
       tiles.push(td);
     }
@@ -33,26 +27,23 @@ function createGrid(table, tiles, puzzleSize) {
   }
 }
 
-function shuffleTiles(tiles, puzzleSize) {
+function shuffleTiles(tiles, size) {
   for (let i = 0; i < 1000; i++) {
-    const randomIndex = Math.floor((Math.random() * (puzzleSize - 1)) ^ 2);
+    const randomIndex = Math.floor(Math.random() * size ** 2);
     const targetTile = tiles[randomIndex];
-    click({ target: targetTile }, tiles, puzzleSize);
+    click({ target: targetTile }, tiles, size);
   }
 }
 
-function click(e, tiles, puzzleSize) {
+function click(e, tiles, size) {
   const i = e.target.index;
-  if (i - puzzleSize >= 0 && tiles[i - puzzleSize].value === 0) {
-    swap(tiles, i, i - puzzleSize);
-  } else if (
-    i + puzzleSize < puzzleSize ** 2 &&
-    tiles[i + puzzleSize].value === 0
-  ) {
-    swap(tiles, i, i + puzzleSize);
-  } else if (i % puzzleSize !== 0 && tiles[i - 1].value === 0) {
+  if (i - size >= 0 && tiles[i - size].value === 0) {
+    swap(tiles, i, i - size);
+  } else if (i + size < size ** 2 && tiles[i + size].value === 0) {
+    swap(tiles, i, i + size);
+  } else if (i % size !== 0 && tiles[i - 1].value === 0) {
     swap(tiles, i, i - 1);
-  } else if (i % puzzleSize !== puzzleSize - 1 && tiles[i + 1].value === 0) {
+  } else if (i % size !== size && tiles[i + 1].value === 0) {
     swap(tiles, i, i + 1);
   }
 }
