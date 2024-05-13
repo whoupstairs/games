@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>ETO</title>
+    <script>
+        function calcJunishi() {
+            const year = document.getElementById("yearInput").value; // 年を入力するフィールドから値を取得
+            const jikkan = ["甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"];
+            const eto = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"];
+            const jikkanIndex = (year - 4) % 10;
+            const etoIndex = (year - 4) % 12;
+            const junishi = jikkan[jikkanIndex] + eto[etoIndex]; // 干支を計算
+            document.getElementById("yearDisplay").textContent = year; // 年を表示するための要素に年を設定
+            document.getElementById("junishi").textContent = junishi; // 干支を表示するための要素に干支を設定
+        }
+    </script>
+</head>
+
+<body>
+    <h1>干支</h1>
+    <h2><span id="yearDisplay"></span>年の干支は<span id="junishi"></span>です。</h2>
+    <label for="yearInput">年:</label>
+    <input type="number" id="yearInput"> <!-- 入力フィールドのIDをyearInputに変更 -->
+    <button onclick="calcJunishi()">計算</button>
+    <br>
+</body>
+
+</html>
