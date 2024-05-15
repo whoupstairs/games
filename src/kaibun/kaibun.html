@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>回文判定</title>
+    <script>
+        function kaibun() {
+            // 入力された文字列から回文を作成する
+            let source = document.getElementById("source").value;
+            let kaibun = source.split("").reverse().join("");
+            // 回文を表示する
+            document.getElementById("result").textContent = kaibun;
+        }
+    </script>
+</head>
+
+<body>
+    <input id="source">
+    <button onclick="kaibun()">回文</button>
+    <p id="result"></p>
+</body>
+
+</html>
