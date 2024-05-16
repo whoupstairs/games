@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>摂氏華氏変換</title>
+    <script>
+        function c2f(c) {
+            return c * 9 / 5 + 32; // 摂氏から華氏への変換公式
+        }
+
+        function convert() {
+            let c = document.getElementById("celsius").value; // スライダーから摂氏の値を取得
+            let f = c2f(c); // 華氏に変換
+            let s = "摂氏:" + c + "度は華氏:" + f + "度です。"; // 結果の文字列を生成
+            document.getElementById("result").textContent = s; // 結果を表示
+        }
+    </script>
+</head>
+
+<body>
+    <input id="celsius" type="range" min="0" max="100" onchange="convert()"> <!-- onchangeイベントハンドラを修正 -->
+    <p id="result"></p>
+</body>
+
+</html>
