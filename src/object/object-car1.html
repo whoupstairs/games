@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script>
+        let car = {
+            name: "プリウス",
+            maker: "トヨタ",
+            price: 3000000,
+            gasolin: 20,
+            speed: 180,
+            drive: function () {
+                console.log("運転します");
+            }
+        };
+    </script>
+</head>
+
+<body>
+    <h1>車の情報</h1>
+    <ul>
+        <li>車名: <span id="name"></span></li>
+        <li>メーカー: <span id="maker"></span></li>
+        <li>価格: <span id="price"></span>円</li>
+        <li>燃費: <span id="gasolin"></span>km/L</li>
+        <li>最高速度: <span id="speed"></span>km/h</li>
+    </ul>
+    <button onclick="car.drive()">運転</button>
+    <script>
+        document.getElementById("name").textContent = car.name;
+        document.getElementById("maker").textContent = car.maker;
+        document.getElementById("price").textContent = car.price;
+        document.getElementById("gasolin").textContent = car.gasolin;
+        document.getElementById("speed").textContent = car.speed;
+    </script>
+</body>
+
+</html>
