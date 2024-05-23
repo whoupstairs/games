@@ -12,9 +12,16 @@
             width: 30px;
             height: 30px;
             background-color: green;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
         }
     </style>
     <script>
+        let currentPlayer = '○';
+
         function init() {
             let b = document.getElementById("board");
             for (let i = 0; i < 3; i++) {
@@ -29,8 +36,13 @@
                 b.appendChild(tr);
             }
         }
+
         function clicked(e) {
-            document.getElementById("info").textContent = e.target.id + " clicked";
+            let cell = e.target;
+            if (cell.textContent === '') {
+                cell.textContent = currentPlayer;
+                currentPlayer = currentPlayer === '○' ? '×' : '○';
+            }
         }
     </script>
 </head>
