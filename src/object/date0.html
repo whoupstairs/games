@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script>
+        function update() {
+            let now = new Date();
+            document.getElementById("year").textContent = now.getFullYear();
+            document.getElementById("month").textContent = now.getMonth();
+            document.getElementById("date").textContent = now.getDate();
+            document.getElementById("hour").textContent = now.getHours();
+            document.getElementById("minute").textContent = now.getMinutes();
+            document.getElementById("second").textContent = now.getSeconds();
+            document.getElementById("millisecond").textContent = now.getMilliseconds();
+        }
+    </script>
+</head>
+
+<body onload="update()">
+    <p>
+        現在の日時は、
+        <span id="year"></span>年
+        <span id="month"></span>月
+        <span id="date"></span>日
+        <span id="hour"></span>時
+        <span id="minute"></span>分
+        <span id="second"></span>秒
+        <span id="millisecond"></span>ミリ秒です。
+    </p>
+    <button onclick="update()">更新</button>
+</body>
+
+</html>
