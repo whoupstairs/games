@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>ストップウォッチ</title>
+    <script>
+        let timerId;
+        let startTime;
+        let elapsedTime = 0;
+
+        function startTimer() {
+            if (!timerId) {  // タイマーが動いていない場合のみスタート
+                startTime = Date.now() - elapsedTime;
+                timerId = setInterval(tick, 1); // 1ミリ秒ごとに更新
+            }
+        }
+
+        function stopTimer() {
+            if (timerId) {
+                clearInterval(timerId);
+                timerId = null;
+            }
+        }
+
+        function tick() {
+            elapsedTime = Date.now() - startTime;
+            document.getElementById("counter").textContent = (elapsedTime / 1000).toFixed(3) + "秒";
+        }
+    </script>
+</head>
+
+<body>
+    <button onclick="startTimer()">スタート</button>
+    <button onclick="stopTimer()">ストップ</button>
+    <h2 id="counter">0.000秒</h2>
+</body>
+
+</html>
