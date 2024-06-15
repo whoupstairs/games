@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script>
+        let ctx;
+        function init() {
+            let canvas = document.getElementById('canvas');
+            ctx = canvas.getContext('2d');
+            setInterval(drawClock, 1000);
+        }
+
+        function drawClock() {
+            ctx.clearRect(0, 0, 200, 200); // 画面をクリア
+
+            // 時計の外枠を描画
+            ctx.beginPath();
+            ctx.arc(100, 100, 90, 0, 2 * Math.PI);
+            ctx.stroke();
+
+            // 目盛りを描画
+            for (let i = 0; i < 60; i++) {
+                ctx.save();
+                let r = (Math.PI / 30) * i;
+                ctx.translate(100, 100);
+                ctx.rotate(r);
+
+                ctx.beginPath();
+                if (i % 5 === 0) {
+                    // 5分刻みの目盛り
+                    ctx.moveTo(0, -70);
+                    ctx.lineTo(0, -80);
+                } else {
+                    // 分刻みの線
+                    ctx.moveTo(0, -75);
+                    ctx.lineTo(0, -80);
+                }
+                ctx.stroke();
+
+                ctx.restore();
+            }
+
+            let now = new Date();
+            let sec = now.getSeconds();
+            let min = now.getMinutes();
+            let hr = now.getHours();
+
+            // 秒針を描画
+            drawHand((Math.PI / 30) * sec, 80, "red");
+
+            // 分針を描画
+            drawHand((Math.PI / 30) * min + (Math.PI / 1800) * sec, 70, "black");
+
+            // 時針を描画
+            drawHand((Math.PI / 6) * hr + (Math.PI / 360) * min + (Math.PI / 21600) * sec, 50, "black");
+        }
+
+        function drawHand(angle, length, color) {
+            ctx.save();
+            ctx.translate(100, 100);
+            ctx.rotate(angle);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(0, -length);
+            ctx.stroke();
+            ctx.restore();
+        }
+    </script>
+</head>
+
+<body onload="init()">
+    <canvas id="canvas" width="200" height="200"></canvas>
+</body>
+
+</html>
