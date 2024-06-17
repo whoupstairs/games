@@ -20,6 +20,11 @@
             /* 画像パスを確認 */
             background-size: 100px 140px;
         }
+
+        #retryButton {
+            display: none;
+            margin-top: 20px;
+        }
     </style>
     <script>
         "use strict";
@@ -43,6 +48,10 @@
 
         function init() {
             let table = document.getElementById("table");
+            table.innerHTML = ""; // テーブルを初期化
+            score = 0; // スコアをリセット
+            prevCard = null; // 前のカードをリセット
+
             let cards = [];
             for (let i = 1; i <= 10; i++) {
                 cards.push(i);
@@ -63,6 +72,8 @@
             }
             startTime = new Date();
             timer = setInterval(tick, 1000);
+            document.getElementById("retryButton").style.display = "none"; // Retryボタンを非表示
+            document.getElementById("message").textContent = ""; // メッセージをリセット
         }
 
         function tick() {
@@ -89,9 +100,11 @@
             if (prevCard.number == num) {
                 if (++score == 10) {
                     clearInterval(timer);
+                    document.getElementById("message").textContent = "Congratulation";
+                    document.getElementById("retryButton").style.display = "block"; // Retryボタンを表示
                 }
                 prevCard = null;
-                clearTimeout(timer);
+                clearTimeout(flipTimer);
             } else {
                 flipTimer = setTimeout(function () {
                     src.className = "card back"; // 失敗した場合にカードを元に戻す
@@ -109,6 +122,8 @@
 <body onload="init()">
     <table id="table"></table>
     <h2>経過時間:<span id="time">0</span>秒</h2>
+    <h2 id="message"></h2>
+    <button id="retryButton" onclick="init()">Retry</button>
 </body>
 
 </html>
