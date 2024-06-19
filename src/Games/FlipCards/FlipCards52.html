@@ -4,6 +4,20 @@
 <head>
     <meta charset="utf-8">
     <style>
+        body {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #table-container {
+            flex-grow: 1;
+        }
+
+        #info-container {
+            margin-left: 20px;
+            min-width: 200px;
+        }
+
         td.card {
             width: 100px;
             height: 140px;
@@ -24,6 +38,10 @@
         #retryButton {
             display: none;
             margin-top: 20px;
+        }
+
+        .red {
+            color: red;
         }
     </style>
     <script>
@@ -70,14 +88,16 @@
                 let tr = document.createElement("tr");
                 for (let j = 0; j < 7; j++) {
                     let td = document.createElement("td");
-                    td.className = "card back"; // 初期状態をbackクラスに設定
                     if (cardCount < cards.length) {
                         td.cardData = cards[cardCount];
+                        td.className = "card back"; // 初期状態をbackクラスに設定
+                        td.onclick = flip;
                         cardCount++;
                     } else {
                         td.cardData = { number: "", suit: "" }; // 空白のカード
+                        td.className = "card"; // 最初から表示された状態
                     }
-                    td.onclick = flip;
+                    td.innerHTML = getCardDisplay(td.cardData, td.className === "card");
                     tr.appendChild(td); // tdをtrに追加
                 }
                 table.appendChild(tr);
@@ -96,13 +116,13 @@
 
         function flip(e) {
             let src = e.target;
-            if (flipTimer || src.textContent != "") {
+            if (flipTimer || src.className !== "card back") {
                 return;
             }
 
             let cardData = src.cardData;
             src.className = "card"; // カードを裏返した時のクラス
-            src.textContent = cardData.number + cardData.suit;
+            src.innerHTML = getCardDisplay(cardData, true);
 
             if (prevCard == null) {
                 prevCard = src;
@@ -117,12 +137,13 @@
                 }
                 prevCard = null;
                 clearTimeout(flipTimer);
+                document.getElementById("score").textContent = score; // めくった回数を表示
             } else {
                 flipTimer = setTimeout(function () {
                     src.className = "card back"; // 失敗した場合にカードを元に戻す
-                    src.textContent = "";
+                    src.innerHTML = "";
                     prevCard.className = "card back"; // 失敗した場合にカードを元に戻す
-                    prevCard.textContent = "";
+                    prevCard.innerHTML = "";
                     prevCard = null;
                     flipTimer = NaN;
                 }, 1000);
@@ -130,15 +151,47 @@
             flips++; // めくった回数を増やす
             document.getElementById("flips").textContent = flips; // めくった回数を表示
         }
+
+        function getCardDisplay(cardData, isVisible) {
+            if (!isVisible) {
+                return "";
+            }
+
+            let displayNumber;
+            switch (cardData.number) {
+                case 1:
+                    displayNumber = 'A';
+                    break;
+                case 11:
+                    displayNumber = 'J';
+                    break;
+                case 12:
+                    displayNumber = 'Q';
+                    break;
+                case 13:
+                    displayNumber = 'K';
+                    break;
+                default:
+                    displayNumber = cardData.number;
+            }
+
+            let displayClass = (cardData.suit === '♥' || cardData.suit === '♦') ? 'red' : '';
+            return `<span class="${displayClass}">${displayNumber}${cardData.suit}</span>`;
+        }
     </script>
 </head>
 
 <body onload="init()">
-    <table id="table"></table>
-    <h2>経過時間:<span id="time">0</span>秒</h2>
-    <h2>めくった回数:<span id="flips">0</span></h2>
-    <h2 id="message"></h2>
-    <button id="retryButton" onclick="init()">Retry</button>
+    <div id="table-container">
+        <table id="table"></table>
+    </div>
+    <div id="info-container">
+        <h2>経過時間:<span id="time">0</span>秒</h2>
+        <h2>めくった回数:<span id="flips">0</span></h2>
+        <h2>正解ペア数:<span id="score">0</span></h2>
+        <h2 id="message"></h2>
+        <button id="retryButton" onclick="init()">Retry</button>
+    </div>
 </body>
 
 </html>
