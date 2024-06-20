@@ -64,6 +64,7 @@
         let flips = 0;
         let prevCard = null;
         let startTime = null;
+        let gameStarted = false;
 
         const suits = ['♠', '♥', '♣', '♦'];
 
@@ -73,7 +74,9 @@
             score = 0; // スコアをリセット
             flips = 0; // めくった回数をリセット
             prevCard = null; // 前のカードをリセット
+            gameStarted = false;
             document.getElementById("flips").textContent = flips; // めくった回数をリセットして表示
+            document.getElementById("score").textContent = score; // 正解ペア数をリセットして表示
 
             let cards = [];
             for (let i = 1; i <= 13; i++) {
@@ -102,10 +105,17 @@
                 }
                 table.appendChild(tr);
             }
+            clearInterval(timer); // タイマーをクリア
+            document.getElementById("retryButton").style.display = "none"; // Retryボタンを非表示
+            document.getElementById("startButton").disabled = false; // Startボタンを有効
+            document.getElementById("message").textContent = ""; // メッセージをリセット
+        }
+
+        function startGame() {
+            gameStarted = true;
             startTime = new Date();
             timer = setInterval(tick, 1000);
-            document.getElementById("retryButton").style.display = "none"; // Retryボタンを非表示
-            document.getElementById("message").textContent = ""; // メッセージをリセット
+            document.getElementById("startButton").disabled = true; // Startボタンを無効
         }
 
         function tick() {
@@ -115,6 +125,7 @@
         }
 
         function flip(e) {
+            if (!gameStarted) return; // ゲームが開始されていない場合は何もしない
             let src = e.target;
             if (flipTimer || src.className !== "card back") {
                 return;
@@ -190,6 +201,7 @@
         <h2>めくった回数:<span id="flips">0</span></h2>
         <h2>正解ペア数:<span id="score">0</span></h2>
         <h2 id="message"></h2>
+        <button id="startButton" onclick="startGame()">Start</button>
         <button id="retryButton" onclick="init()">Retry</button>
     </div>
 </body>
