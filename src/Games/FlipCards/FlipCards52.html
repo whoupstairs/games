@@ -77,6 +77,7 @@
             gameStarted = false;
             document.getElementById("flips").textContent = flips; // めくった回数をリセットして表示
             document.getElementById("score").textContent = score; // 正解ペア数をリセットして表示
+            document.getElementById("accuracy").textContent = "0.0%"; // 正答率をリセットして表示
 
             let cards = [];
             for (let i = 1; i <= 13; i++) {
@@ -124,12 +125,28 @@
             document.getElementById("time").textContent = elapsed;
         }
 
-        function flip(e) {
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function playSound(soundFile) {
+            let audio = new Audio(soundFile);
+            audio.play();
+        }
+
+        function updateAccuracy() {
+            let accuracy = flips > 0 ? (score / flips) * 100 : 0;
+            document.getElementById("accuracy").textContent = accuracy.toFixed(1) + "%";
+        }
+
+        async function flip(e) {
             if (!gameStarted) return; // ゲームが開始されていない場合は何もしない
             let src = e.target;
             if (flipTimer || src.className !== "card back") {
                 return;
             }
+
+            playSound("flip.mp3");
 
             let cardData = src.cardData;
             src.className = "card"; // カードを裏返した時のクラス
@@ -141,8 +158,12 @@
             }
 
             if (prevCard.cardData.number == cardData.number) {
+                await sleep(500); // 100ms待機
+                playSound("success.mp3");
                 if (++score == 26) { // 合計で26ペア
                     clearInterval(timer);
+                    await sleep(500);
+                    playSound("congratulation.mp3");
                     document.getElementById("message").textContent = "Congratulation";
                     document.getElementById("retryButton").style.display = "block"; // Retryボタンを表示
                 }
@@ -150,6 +171,8 @@
                 clearTimeout(flipTimer);
                 document.getElementById("score").textContent = score; // めくった回数を表示
             } else {
+                await sleep(500); // 100ms待機
+                playSound("failure.mp3");
                 flipTimer = setTimeout(function () {
                     src.className = "card back"; // 失敗した場合にカードを元に戻す
                     src.innerHTML = "";
@@ -161,6 +184,7 @@
             }
             flips++; // めくった回数を増やす
             document.getElementById("flips").textContent = flips; // めくった回数を表示
+            updateAccuracy(); // 正答率を更新
         }
 
         function getCardDisplay(cardData, isVisible) {
@@ -200,6 +224,7 @@
         <h2>経過時間:<span id="time">0</span>秒</h2>
         <h2>めくった回数:<span id="flips">0</span></h2>
         <h2>正解ペア数:<span id="score">0</span></h2>
+        <h2>正答率:<span id="accuracy">0.0%</span></h2>
         <h2 id="message"></h2>
         <button id="startButton" onclick="startGame()">Start</button>
         <button id="retryButton" onclick="init()">Retry</button>
