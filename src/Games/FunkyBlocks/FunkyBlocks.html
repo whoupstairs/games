@@ -11,7 +11,8 @@
       touch-action: none;
     }
 
-    #START {
+    #START,
+    #REPLAY {
       position: absolute;
       left: 200px;
       top: 200px;
@@ -133,6 +134,10 @@
       sound = document.getElementById("sound");
       bgm = document.getElementById("bgm");
       repaint();
+
+      // 初期表示時にはSTARTボタンを表示
+      document.getElementById("START").style.display = "block";
+      document.getElementById("REPLAY").style.display = "none";
     }
 
     // ゲーム実行開始
@@ -156,6 +161,7 @@
         false
       );
       document.getElementById("START").style.display = "none";
+      document.getElementById("REPLAY").style.display = "none";
       bgm.play();
     }
 
@@ -194,6 +200,7 @@
       if (elapsed > 69) {
         clearInterval(timer); // 70秒でゲーム終了
         timer = NaN;
+        document.getElementById("REPLAY").style.display = "block"; // REPLAYボタンを表示
       }
       repaint();
     }
@@ -368,6 +375,7 @@
 
       if (isNaN(timer)) {
         ctx.fillText("FINISH", 350, 300);
+        document.getElementById("REPLAY").style.display = "block"; // REPLAYボタンを表示
       }
 
       // スコア
@@ -393,8 +401,10 @@
   <audio src="sound.mp3" id="sound"></audio>
   <audio src="letsgo.mp3" id="bgm"></audio>
   <canvas id="canvas" width="800" height="600"></canvas>
-  <img id="START" src="start.png" onclick="go()"><br>
-  <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5" oninput="adjustVolume(event)">
+  <img id="START" src="start.png" onclick="go()">
+  <img id="REPLAY" src="replay.png" onclick="init(); go();">
+  <br>
+  <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.2" oninput="adjustVolume(event)">
   <img id="bgimage" src="back.png" style="display: none">
   <img id="block0" src="block0.png" style="display: none">
   <img id="block1" src="block1.png" style="display: none">
