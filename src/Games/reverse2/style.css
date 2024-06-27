@@ -1,0 +1,21 @@
+#board {
+    background-color: #555555;
+  }
+  
+  td.cell {
+    background-color: #ffb27f;
+    width: 80px;
+    height: 80px;
+    margin: 2px;
+    font-size: 50px;
+    text-align: center;
+  }
+  
+  td.black {
+    color: black;
+  }
+  
+  td.white {
+    color: white;
+  }
+  
