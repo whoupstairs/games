@@ -19,3 +19,13 @@
     color: white;
   }
   
+  #titleScreen {
+    text-align: center;
+    margin-top: 100px;
+  }
+  
+  #gameScreen {
+    text-align: center;
+    margin-top: 20px;
+  }
+  

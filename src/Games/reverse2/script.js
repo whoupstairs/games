@@ -14,10 +14,12 @@ let BLACK = 1; // 自分
 let WHITE = 2; // PC
 let data = []; // 盤データ（0:なし、1:黒、2:白）
 let myTurn = false; // 自分の番か否か
+let difficulty = "easy"; // コンピュータのレベル
 
 // 初期化関数
 function init() {
   let b = document.getElementById("board");
+  b.innerHTML = ""; // ボードのクリア
   for (let i = 0; i < 8; i++) {
     let tr = document.createElement("tr"); // 行を作成
     data[i] = [0, 0, 0, 0, 0, 0, 0, 0]; // i行目のデータ設定
@@ -136,6 +138,11 @@ function think() {
           tmpData[x][y] = WHITE;
         }
         let score = calcWeightData(tmpData);
+        if (difficulty === "easy") {
+          score += Math.random() * 10 - 5; // 初級はランダム性を増加
+        } else if (difficulty === "medium") {
+          score += Math.random() * 4 - 2; // 中級は少しランダム性を追加
+        }
         if (score > highScore) {
           highScore = score;
           (px = x), (py = y);
@@ -250,4 +257,12 @@ function getFlipCellsOneDir(i, j, dx, dy, color) {
       flipped.push([x, y]);
     }
   }
+}
+
+// ゲーム開始関数
+function startGame(level) {
+  difficulty = level;
+  document.getElementById("titleScreen").style.display = "none";
+  document.getElementById("gameScreen").style.display = "block";
+  init();
 }
